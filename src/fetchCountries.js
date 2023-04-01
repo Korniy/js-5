@@ -1,6 +1,6 @@
-export { fetchCountries };
+// export { fetchCountries };
 
-function fetchCountries(name) {
+export function fetchCountries(name) {
   const BASE_URL = 'https://restcountries.com/v3.1/name';
 
   return fetch(

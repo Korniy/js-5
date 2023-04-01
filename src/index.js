@@ -14,17 +14,17 @@ inputEl.addEventListener('input', debounce(onInputText, DEBOUNCE_DELAY));
 function onInputText() {
   resetInput();
 
-  const name = inputEl.value.trim();
+  const inputValue = inputEl.value.trim();
 
-  if (name !== '') {
-    fetchCountries(name)
+  if (inputValue !== '') {
+    fetchCountries(inputValue)
       .then(data => {
         if (data.length > 10) {
           Notiflix.Notify.info(
             'Too many matches found. Please enter a more specific name.'
           );
         } else {
-          createCountry(data);
+          createCountries(data);
         }
       })
       .catch(error =>
@@ -33,10 +33,10 @@ function onInputText() {
   }
 }
 
-function createCountry(countries) {
+function createCountries(countries) {
   createCountriesListMarcup(countries);
   if (countries.length === 1) {
-    createCountriesInfoMarcup(countries[0]);
+    createCountryInfoMarcup(countries[0]);
   }
 }
 
@@ -44,26 +44,26 @@ function createCountriesListMarcup(countries) {
   const marcup = countries
     .map(({ name, flags }) => {
       return `<li class='country-list__item'>
-      <img class='country-list__img' alt='' src=${flags.svg} width='30'>
-    <p class='country-list__text'>${name.official}</p>
-    </li>`;
+                <img class='country-list__img' alt='' src=${flags.svg} width='50'>
+                <p class='country-list__text'>${name.official}</p>
+              </li>`;
     })
     .join('');
+
   listEl.insertAdjacentHTML('beforeend', marcup);
 }
 
-function createCountriesInfoMarcup(countries) {
+function createCountryInfoMarcup(countries) {
   const { capital, population, languages } = countries;
 
-  const marcupInfo = `
- <ul class=''country-info__list>
- <li class='country-info__item'><p><span class='country-info__desc'>Capital: </span>${capital}</p></li>
- <li class='country-info__item'><p><span class='country-info__desc'>Languages: </span>${Object.values(
-   languages
- )}</p></li>
- <li class='country-info__item'><p><span class='country-info__desc'>Population: </span></p>${population}</li>
- </ul> 
-  `;
+  const marcupInfo = `<ul class=''country-info__list>
+                        <li class='country-info__item'><p class='country-info__text'><span class='country-info__desc'>Capital: </span>${capital}</p></li>
+                        <li class='country-info__item'><p class='country-info__text'><span class='country-info__desc'>Population: </span>${population}</p></li>
+                        <li class='country-info__item'><p class='country-info__text'><span class='country-info__desc'>Languages: </span>${Object.values(
+                          languages
+                        )}</p></li>
+                      </ul>`;
+
   divEl.insertAdjacentHTML('beforeend', marcupInfo);
 }
 
